@@ -53,3 +53,8 @@ function callback(data) {
 }
 
 // Insert fetch token and request callback here.
+
+.then((response) => response.json())
+  .then((response) => {
+    callback(response)
+  });
