@@ -9,31 +9,17 @@ function callback(data) {
         return str
     }
 
-    const questions = data.data.apiActivity.items
-    console.log("Questions are: ", questions)
+    const assignmentData = data.data.apiActivity.items
+    console.log("Questions are: ", assignmentData)
     let answers = [];
-    questions.forEach((question) => {
-        let answerList = [];
-        let root = question.questions[0].validation.valid_response.value
-        if (question.questions[0].type == "clozeformula") {
-            root.forEach((res) => {
-                // console.log("res value:", res, res.value);
-                for (let i = 0; i < res.length; i++) {
-                    if (res[i].value) {
-                        answerList.push(format(res[i].value))
-                    }
-                } 
-            })
-        } else if (question.questions[0].type == "mcq") {
-            let answerIndexes = question.questions[0].validation.valid_response.value
-            let optionIndexes = question.questions[0].options
-            for (let i = 0; i < optionIndexes.length; i++) {
-                if (answerIndexes.includes(optionIndexes[i].value)) {
-                    answerList.push(format(optionIndexes[i].label))
-                }
-            }
-        }
-        answers.push(answerList)
+    assignmentData.forEach((individualQuestion) => {
+        //console.log(individualQuestion);
+        let correctQuestionResponses = [];
+        individualQuestion.questions.forEach((question) => { // gets sub question if there are multiple questions to a problem
+            console.log(question.validation.valid_response.value.type)
+            correctQuestionResponses.push(question.validation.valid_response.value);
+        })
+        answers.push(correctQuestionResponses);
     })
 
     console.log(answers);
